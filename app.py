@@ -53,7 +53,7 @@ def mirror(name):
 
 
 # TODO: Implement the rest of the API here!
-@app.route("/users", methods = ["GET"])
+@app.route("/users", methods=["GET"])
 def users():
     team = request.args.get("team")
     if not team:
@@ -65,40 +65,45 @@ def users():
     return create_response(data)
 
 
-@app.route("/users/<int:user_id>", methods = ["GET"])
+@app.route("/users/<int:user_id>", methods=["GET"])
 def get_user_by_id(user_id):
     user = db.getById("users", user_id)
     data = {"user": user}
     if user == None:
-        return create_response(status = 404, message = "Invalid ID")
+        return create_response(status=404, message="Invalid ID")
     return create_response(data)
 
-@app.route("/users", methods = ["POST"])
+
+@app.route("/users", methods=["POST"])
 def create_user():
     body = request.get_json("user")
     user = db.create("users", body)
     if user == None:
-        return create_response(status = 404, message = "User info not found")
+        return create_response(status=404, message="User info not found")
     if "name" not in user or "age" not in user or "team" not in user:
-        return create_response(status = 422, message = "Some information is missing!")
-    return create_response({"user": user}, status = 201)
+        return create_response(status=422, message="Some information is missing!")
+    return create_response({"user": user}, status=201)
 
-@app.route("/users/<int:user_id>", methods = ["DELETE"])
+
+@app.route("/users/<int:user_id>", methods=["DELETE"])
 def delete_user(user_id):
     user = db.getById("users", user_id)
     if user == None:
-        return create_response(status = 404, message = "Invalid ID")
+        return create_response(status=404, message="Invalid ID")
     db.deleteById("users", user_id)
-    return create_response(message = "Successfully deleted!")
+    return create_response(message="Successfully deleted!")
 
-@app.route("/users/<int:user_id>", methods = ["PUT"])
+
+@app.route("/users/<int:user_id>", methods=["PUT"])
 def update_user(user_id):
     update_values = request.get_json("user")
-    user = db.getById("users", user_id, )
+    user = db.getById("users", user_id)
     if user == None:
-        return create_response(status = 404, message = "Invalid ID")
+        return create_response(status=404, message="Invalid ID")
     db.updateById("users", user_id, update_values)
-    return create_response({"user": user}, status = 201)
+    return create_response({"user": user}, status=201)
+
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
