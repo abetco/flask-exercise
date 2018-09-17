@@ -66,10 +66,16 @@ def get_user_by_id(user_id):
     data = {
             'users': db.getById('users', user_id)
     }
-    if db.getById('users', user_id) == 'null':
-        return create_response(data, status=404)
+    if db.getById('users', user_id) == None:
+        data = {"status": 404, "message": "invalid id"}
 
     return create_response(data)
+
+#@app.route('/users?<team>', methods = ['GET'])
+#def get_user_by_team(team):
+@app.route('/users/team', methods = ['GET'])
+def get_teams():
+    return create_response(db.get('team'))
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
