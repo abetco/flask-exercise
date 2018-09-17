@@ -40,15 +40,16 @@ def test_get_user_id(client):
     assert res_user["name"] == "Aria"
     assert res_user["age"] == 19
 
-#def test_create_user(client):
-#    data = {
-#            "name": "Helena",
-#            "age": 19,
-#            "team": "C2TC"
-#            }
-#    res = client.post("/users", data)
-#    res_user = res.json["result"]["user"]
-#    assert res_user["id"] == 5
-#    assert res_user["age"] == 19
-#    assert res_user["team"] == "C2TC"
-#    assert res_user["name"] == "Helena"
+def test_create_user(client):
+    #Test successful request
+    body = {"name": "David", "age": 100, "team": "Kiva"}
+    res = client.post("/users", json=body)
+    assert res.status_code == 201
+    res_user = res.json["result"]["user"]
+    assert res_user["name"] == "David"
+    
+    #Test bad request
+    body = {"name": "Lato", "age": 28}
+    res = client.post("/users", json=body)
+    assert res.status_code == 422
+    assert len(res.json["message"]) > 0

@@ -79,7 +79,7 @@ def create_user():
     user = db.create("users", body)
     if user == None:
         return create_response(status = 404, message = "User info not found")
-    if user["name"] == None or user["age"] == None or user["team"] == None:
+    if "name" not in user or "age" not in user or "team" not in user:
         return create_response(status = 422, message = "Some information is missing!")
     return create_response({"user": user}, status = 201)
 
