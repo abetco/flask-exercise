@@ -66,3 +66,13 @@ def test_update_user(client):
     res = client.put("/users/10", json=body)
     assert res.status_code == 404
     assert len(res.json["message"]) > 0
+
+def test_delete_user(client):
+    #Test successful deletion
+    res = client.delete("/users/2")
+    assert res.json["message"] == "Successfully deleted!"
+
+    #Test unsuccessful update
+    res = client.delete("/users/8")
+    assert res.status_code == 404
+    assert len(res.json["message"]) > 0
