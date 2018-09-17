@@ -53,3 +53,16 @@ def test_create_user(client):
     res = client.post("/users", json=body)
     assert res.status_code == 422
     assert len(res.json["message"]) > 0
+
+def test_update_user(client):
+    #Test successful update
+    body = {"name": "Bob", "team": "PARFAR"}
+    res = client.put("/users/4", json=body)
+    res_user = res.json["result"]["user"]
+    assert res_user["name"] == "Bob"
+    assert res_user["age"] == 24
+    
+    #Test unsuccessful update
+    res = client.put("/users/10", json=body)
+    assert res.status_code == 404
+    assert len(res.json["message"]) > 0

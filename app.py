@@ -98,7 +98,7 @@ def update_user(user_id):
     if user == None:
         return create_response(status = 404, message = "Invalid ID")
     db.updateById("users", user_id, update_values)
-    return create_response(message = "Successfully updated!")
+    return create_response({"user": user}, status = 201)
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
