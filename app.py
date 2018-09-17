@@ -60,6 +60,17 @@ def get_users():
      }
     return create_response(data)
 
+
+@app.route('/users/<int:user_id>', methods = ['GET'])
+def get_user_by_id(user_id):
+    data = {
+            'users': db.getById('users', user_id)
+    }
+    if db.getById('users', user_id) == 'null':
+        return create_response(data, status=404)
+
+    return create_response(data)
+
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
