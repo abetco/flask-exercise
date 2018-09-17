@@ -75,9 +75,21 @@ def get_user_by_id(user_id):
 
 @app.route("/users", methods = ["POST"])
 def create_user():
-body = request.get_json()
-user = db.create('users', body)
-return create_response({"user": user}, status = 201)
+    body = request.get_json("user")
+    user = db.create('users', body)
+    if user == None:
+        return create_response(status = 404, message = "User info not found")
+    if user["name"] == None or user["age"] == None or user["team"] == None:
+        return create_response(status = 422, message = "Some information is missing!")
+    return create_response({"user": user}, status = 201)
+
+@app.route("/users/<int:user_id>", methods = ["DELETE"])
+def delete_user(user_id):
+    user = db.getById("users", user_id)
+    if user == None:
+        return create_response(status = 404, message = "Invalid ID")
+    db.deleteById("users", user_id)
+    return create_response(message = "Successfully deleted!")
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
