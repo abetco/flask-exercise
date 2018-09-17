@@ -53,7 +53,7 @@ def mirror(name):
 
 
 # TODO: Implement the rest of the API here!
-@app.route('/users', methods = ['GET'])
+@app.route("/users", methods = ["GET"])
 def users():
     team = request.args.get("team")
     if not team:
@@ -65,15 +65,19 @@ def users():
     return create_response(data)
 
 
-@app.route('/users/<int:user_id>', methods = ['GET'])
+@app.route("/users/<int:user_id>", methods = ["GET"])
 def get_user_by_id(user_id):
-    data = {
-            'users': db.getById('users', user_id)
-    }
-    if db.getById('users', user_id) == None:
-        data = {"status": 404, "message": "invalid id"}
+    user = db.getById("users", user_id)
+    data = {"user": user}
+    if user == None:
+        return create_response(status = 404, message = "Invalid ID")
     return create_response(data)
 
+@app.route("/users", methods = ["POST"])
+def create_user():
+body = request.get_json()
+user = db.create('users', body)
+return create_response({"user": user}, status = 201)
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
