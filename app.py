@@ -76,7 +76,7 @@ def get_user_by_id(user_id):
 @app.route("/users", methods = ["POST"])
 def create_user():
     body = request.get_json("user")
-    user = db.create('users', body)
+    user = db.create("users", body)
     if user == None:
         return create_response(status = 404, message = "User info not found")
     if user["name"] == None or user["age"] == None or user["team"] == None:
@@ -91,6 +91,14 @@ def delete_user(user_id):
     db.deleteById("users", user_id)
     return create_response(message = "Successfully deleted!")
 
+@app.route("/users/<int:user_id>", methods = ["PUT"])
+def update_user(user_id):
+    update_values = request.get_json("user")
+    user = db.getById("users", user_id, )
+    if user == None:
+        return create_response(status = 404, message = "Invalid ID")
+    db.updateById("users", user_id, update_values)
+    return create_response(message = "Successfully updated!")
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
 """
